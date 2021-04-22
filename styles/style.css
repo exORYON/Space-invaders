@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.player-ship {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  height: 85px;
+  width: 85px;
+  transition: .25s ease-out;
+}
+
+.moving {
+  filter: blur(0.5px);
+}
+
+.moving-top {
+  transform: translate(-50%, -50%) skewY(-12deg, 20deg);
+  margin-top: 10px;
+}
+
+.moving-bottom {
+  margin-bottom: 5px;
+}
+
+.moving-right {
+  transform: translate(-50%, -50%) scale(0.94) skew(-12deg, 20deg);
+  margin-right: 5px;
+}
+
+.moving-left {
+  transform: translate(-50%, -50%) scale(0.94) skew(12deg, -20deg);
+  margin-left: 5px;
+}

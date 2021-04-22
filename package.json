@@ -1,0 +1,15 @@
+{
+  "name": "space-invaders",
+  "version": "1.0.0",
+  "description": "game",
+  "main": "Game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ORYON",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "4.2.4"
+  }
+}
