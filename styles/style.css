@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  user-select: none;
   margin: 0;
   padding: 0;
 }
@@ -10,7 +11,7 @@ body {
 }
 
 .player-ship {
-  position: absolute;
+  position: relative;
   transform: translate(-50%, -50%);
   height: 85px;
   width: 85px;
@@ -38,4 +39,12 @@ body {
 .moving-left {
   transform: translate(-50%, -50%) scale(0.94) skew(12deg, -20deg);
   margin-left: 5px;
+}
+
+.bullet {
+  width: 5px;
+  height: 5px;
+  background-color: black;
+  position: absolute;
+  z-index: 2;
 }

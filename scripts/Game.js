@@ -12,6 +12,7 @@ var Game = /** @class */ (function () {
     Game.prototype.addEventListeners = function () {
         document.addEventListener('keydown', this.keyboardHandler.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.keyboardHandler.handleKeyUp.bind(this));
+        document.addEventListener('click', this.playerShip.makeShot.bind(this));
     };
     return Game;
 }());
