@@ -9,13 +9,14 @@ export interface PlayerShip {
 
 export class PlayerShip {
   static bulletsToMove = [];
-  static bulletsTimer = null;
+  static shootingTimer: any;
+  static bulletsTimer: any;
   static bulletsCounter = 0;
 
-  static traceBullet(id) {
+  static traceBullet(id: number) {
     const bullet = document.getElementById(`bullet-${id}`);
     PlayerShip.bulletsToMove.push(bullet);
-    PlayerShip.bulletsTimer = setInterval(PlayerShip.moveBullets.bind(PlayerShip), 100);
+    PlayerShip.bulletsTimer = setInterval(PlayerShip.moveBullets.bind(PlayerShip), 400);
   }
 
   static moveBullets() {
@@ -25,7 +26,7 @@ export class PlayerShip {
     }
 
     for (let bullet of this.bulletsToMove) {
-      const currentPosY = parseInt(bullet.style.top);
+      let currentPosY = parseInt(bullet.style.top);
       currentPosY--;
 
       bullet.style.top = currentPosY + '%';
@@ -42,7 +43,10 @@ export class PlayerShip {
   }
 
   constructor() {
-    this.playerShipIcon = document.createElement('img');
+    this.playerShipIcon = new Image();
+    this.playerShipIcon.onerror = () => {
+      this.playerShipIcon.src = 'https://raw.githubusercontent.com/exORYON/Projects-preview/8f68ad6c52f7a731fb8ca3446e95770b7f4127ed/player-ship.svg';
+    }
     this.playerShipIcon.src = 'images/player-ship.svg';
     this.playerShipIcon.classList.add('player-ship');
 
@@ -83,8 +87,6 @@ export class PlayerShip {
     }
   }
 
-
-
   updatePosition() {
     this.playerShipIcon.style.top = `${this.positionY}%`;
     this.playerShipIcon.style.left = `${this.positionX}%`;
@@ -93,10 +95,6 @@ export class PlayerShip {
   stopMoving() {
     this.playerShip.playerShipIcon.classList = 'player-ship';
   }
-
-  // inertionAfterStop() {
-
-  // }
 
   makeShot() {
     const { x:bulletPosX, y:bulletPosY } = PlayerShip.getCurrentShipPosition.call(this);
@@ -107,5 +105,15 @@ export class PlayerShip {
 
     PlayerShip.traceBullet(id);
     PlayerShip.bulletsCounter++;
+  }
+
+  startShooting() {
+    PlayerShip.shootingTimer = setInterval(
+      this.playerShip.makeShot.bind(this)
+    , 500);
+  }
+
+  stopShooting() {
+    clearInterval(PlayerShip.shootingTimer);
   }
 }

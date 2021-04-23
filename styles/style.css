@@ -15,7 +15,8 @@ body {
   transform: translate(-50%, -50%);
   height: 85px;
   width: 85px;
-  transition: .25s ease-out;
+  transition: .10s ease-out;
+  z-index: 2;
 }
 
 .moving {
@@ -42,9 +43,11 @@ body {
 }
 
 .bullet {
-  width: 5px;
-  height: 5px;
-  background-color: black;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(255, 98, 50);
   position: absolute;
-  z-index: 2;
+  z-index: 1;
 }

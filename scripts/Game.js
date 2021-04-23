@@ -1,19 +1,18 @@
 import { KeyboardHandler } from './Keyboard-handler.js';
 import { PlayerShip } from './Player-ship.js';
-var Game = /** @class */ (function () {
-    function Game() {
+class Game {
+    constructor() {
+        alert('A few first shots may be frozen. The browser will optimize it after some time :)');
         this.keyboardHandler = new KeyboardHandler();
         this.playerShip = new PlayerShip();
-        this.initializeGame();
-    }
-    Game.prototype.initializeGame = function () {
         this.addEventListeners();
-    };
-    Game.prototype.addEventListeners = function () {
+    }
+    addEventListeners() {
         document.addEventListener('keydown', this.keyboardHandler.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.keyboardHandler.handleKeyUp.bind(this));
         document.addEventListener('click', this.playerShip.makeShot.bind(this));
-    };
-    return Game;
-}());
-var game = new Game();
+        document.addEventListener('mousedown', this.playerShip.startShooting.bind(this));
+        document.addEventListener('mouseup', this.playerShip.stopShooting.bind(this));
+    }
+}
+const game = new Game();

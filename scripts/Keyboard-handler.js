@@ -1,7 +1,5 @@
-var KeyboardHandler = /** @class */ (function () {
-    function KeyboardHandler() {
-    }
-    KeyboardHandler.prototype.handleKeyDown = function (event) {
+export class KeyboardHandler {
+    handleKeyDown(event) {
         clearTimeout(this.movingAnimationTimer);
         switch (event.code) {
             case 'KeyW':
@@ -18,8 +16,8 @@ var KeyboardHandler = /** @class */ (function () {
                 break;
         }
         this.playerShip.move(KeyboardHandler.keysPressed);
-    };
-    KeyboardHandler.prototype.handleKeyUp = function (event) {
+    }
+    handleKeyUp(event) {
         switch (event.code) {
             case 'KeyW':
                 KeyboardHandler.keysPressed[0] = false;
@@ -35,9 +33,7 @@ var KeyboardHandler = /** @class */ (function () {
                 break;
         }
         this.movingAnimationTimer = setTimeout(this.playerShip.stopMoving.bind(this), 250);
-    };
-    KeyboardHandler.movingAnimationTimer = null;
-    KeyboardHandler.keysPressed = [false, false, false, false]; // TOP BOTTOM LEFT RIGHT
-    return KeyboardHandler;
-}());
-export { KeyboardHandler };
+    }
+}
+KeyboardHandler.movingAnimationTimer = null;
+KeyboardHandler.keysPressed = [false, false, false, false]; // TOP BOTTOM LEFT RIGHT

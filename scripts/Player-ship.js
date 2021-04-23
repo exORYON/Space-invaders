@@ -1,6 +1,9 @@
-var PlayerShip = /** @class */ (function () {
-    function PlayerShip() {
-        this.playerShipIcon = document.createElement('img');
+export class PlayerShip {
+    constructor() {
+        this.playerShipIcon = new Image();
+        this.playerShipIcon.onerror = () => {
+            this.playerShipIcon.src = 'https://raw.githubusercontent.com/exORYON/Projects-preview/8f68ad6c52f7a731fb8ca3446e95770b7f4127ed/player-ship.svg';
+        };
         this.playerShipIcon.src = 'images/player-ship.svg';
         this.playerShipIcon.classList.add('player-ship');
         this.speed = 1;
@@ -9,19 +12,18 @@ var PlayerShip = /** @class */ (function () {
         this.updatePosition();
         document.body.appendChild(this.playerShipIcon);
     }
-    PlayerShip.traceBullet = function (id) {
-        var bullet = document.getElementById("bullet-" + id);
+    static traceBullet(id) {
+        const bullet = document.getElementById(`bullet-${id}`);
         PlayerShip.bulletsToMove.push(bullet);
-        PlayerShip.bulletsTimer = setInterval(PlayerShip.moveBullets.bind(PlayerShip), 100);
-    };
-    PlayerShip.moveBullets = function () {
+        PlayerShip.bulletsTimer = setInterval(PlayerShip.moveBullets.bind(PlayerShip), 400);
+    }
+    static moveBullets() {
         if (this.bulletsToMove.length === 0) {
             clearInterval(this.bulletsTimer);
             return;
         }
-        for (var _i = 0, _a = this.bulletsToMove; _i < _a.length; _i++) {
-            var bullet = _a[_i];
-            var currentPosY = parseInt(bullet.style.top);
+        for (let bullet of this.bulletsToMove) {
+            let currentPosY = parseInt(bullet.style.top);
             currentPosY--;
             bullet.style.top = currentPosY + '%';
             if (currentPosY <= 0) {
@@ -29,55 +31,56 @@ var PlayerShip = /** @class */ (function () {
                 bullet.remove();
             }
         }
-    };
-    PlayerShip.getCurrentShipPosition = function () {
+    }
+    static getCurrentShipPosition() {
         return { x: this.playerShip.positionX, y: this.playerShip.positionY };
-    };
-    PlayerShip.prototype.move = function (directions) {
+    }
+    move(directions) {
         // TOP
         if (directions[0] && this.positionY > 5) {
-            this.playerShipIcon.style.top = this.positionY - (this.speed * 2) + "%";
+            this.playerShipIcon.style.top = `${this.positionY - (this.speed * 2)}%`;
             this.playerShipIcon.classList = 'player-ship moving moving-top';
             this.positionY--;
         }
         // BOTTOM
         if (directions[1] && this.positionY < 95) {
-            this.playerShipIcon.style.top = this.positionY + (this.speed * 0.8) + "%";
+            this.playerShipIcon.style.top = `${this.positionY + (this.speed * 0.8)}%`;
             this.playerShipIcon.classList = 'player-ship moving moving-bottom';
             this.positionY++;
         }
         // LEFT
         if (directions[2] && this.positionX > 3) {
-            this.playerShipIcon.style.left = this.positionX - this.speed + "%";
+            this.playerShipIcon.style.left = `${this.positionX - this.speed}%`;
             this.playerShipIcon.classList = 'player-ship moving moving-left';
             this.positionX--;
         }
         // RIGHT
         if (directions[3] && this.positionX < 97) {
-            this.playerShipIcon.style.left = this.positionX + this.speed + "%";
+            this.playerShipIcon.style.left = `${this.positionX + this.speed}%`;
             this.playerShipIcon.classList = 'player-ship moving moving-right';
             this.positionX++;
         }
-    };
-    PlayerShip.prototype.updatePosition = function () {
-        this.playerShipIcon.style.top = this.positionY + "%";
-        this.playerShipIcon.style.left = this.positionX + "%";
-    };
-    PlayerShip.prototype.stopMoving = function () {
+    }
+    updatePosition() {
+        this.playerShipIcon.style.top = `${this.positionY}%`;
+        this.playerShipIcon.style.left = `${this.positionX}%`;
+    }
+    stopMoving() {
         this.playerShip.playerShipIcon.classList = 'player-ship';
-    };
-    // inertionAfterStop() {
-    // }
-    PlayerShip.prototype.makeShot = function () {
-        var _a = PlayerShip.getCurrentShipPosition.call(this), bulletPosX = _a.x, bulletPosY = _a.y;
-        var id = PlayerShip.bulletsCounter;
-        this.playerShip.playerShipIcon.insertAdjacentHTML('beforebegin', "<div class=\"bullet\" id=\"bullet-" + id + "\" style=\"left: " + bulletPosX + "%; top: " + bulletPosY + "%\"></div>");
+    }
+    makeShot() {
+        const { x: bulletPosX, y: bulletPosY } = PlayerShip.getCurrentShipPosition.call(this);
+        const id = PlayerShip.bulletsCounter;
+        this.playerShip.playerShipIcon.insertAdjacentHTML('beforebegin', `<div class="bullet" id="bullet-${id}" style="left: ${bulletPosX}%; top: ${bulletPosY}%"></div>`);
         PlayerShip.traceBullet(id);
         PlayerShip.bulletsCounter++;
-    };
-    PlayerShip.bulletsToMove = [];
-    PlayerShip.bulletsTimer = null;
-    PlayerShip.bulletsCounter = 0;
-    return PlayerShip;
-}());
-export { PlayerShip };
+    }
+    startShooting() {
+        PlayerShip.shootingTimer = setInterval(this.playerShip.makeShot.bind(this), 500);
+    }
+    stopShooting() {
+        clearInterval(PlayerShip.shootingTimer);
+    }
+}
+PlayerShip.bulletsToMove = [];
+PlayerShip.bulletsCounter = 0;
